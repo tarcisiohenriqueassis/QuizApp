@@ -34,13 +34,10 @@ export default function Layout() {
         options={{ headerTitle: "Raciocínio Lógico" }}
       />
       <Stack.Screen
-        name="quiz/page/direitosAdministrativosPage"
-        options={{ headerTitle: "Direito Administrativo" }}
+        name="quiz/page/nocoesDeDireitoPage"
+        options={{ headerTitle: "Noções de Direito" }}
       />
-      <Stack.Screen
-        name="quiz/page/execucaoPenalPage"
-        options={{ headerTitle: "Execução Penal" }}
-      />
+
       <Stack.Screen
         name="quiz/page/direitosHumanosPage"
         options={{ headerTitle: "Direitos Humanos" }}
@@ -55,4 +52,5 @@ export default function Layout() {
       />
     </Stack>
   );
+
 }

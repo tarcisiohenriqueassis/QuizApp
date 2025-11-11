@@ -1,27 +1,31 @@
-import React from "react";
 import { View, Button, StyleSheet,ImageBackground } from "react-native";
-import { useRouter } from "expo-router";
-import Brasao from "@/assets/images/Brasao-PPMG.png";
+import { useRouter,Link } from "expo-router";
+import Brasao from "../../assets/images/Brasao-PPMG.png";
 
 export default function Home() {
 
   const router = useRouter();
 
   return (
+    <>
     <ImageBackground source={Brasao} style={styles.background} >
     <View style={styles.container}>
       <Button style={styles.button} title="Constituição Federal" onPress={() => router.push("/(tabs)/quiz/page/constituicaoPage")} />
       <Button style={styles.button} title="Língua Portuguesa" onPress={() => router.push("/(tabs)/quiz/page/portuguesPage")} />
       <Button style={styles.button} title="Informática" onPress={() => router.push("/(tabs)/quiz/page/informaticaPage")} />
       <Button style={styles.button} title="Raciocínio lógico" onPress={() => router.push("/(tabs)/quiz/page/raciocinioLogicoPage")} />
-      <Button style={styles.button} title="Direito administrativos" onPress={() => router.push("/(tabs)/quiz/page/direitosAdministrativosPage")} />
-      <Button style={styles.button} title="Direito Penal" onPress={() => router.push("/(tabs)/quiz/page/execucaoPenalPage")} />
+      <Button style={styles.button} title="Noções de Direito" onPress={() => router.push("/(tabs)/quiz/page/nocoesDeDireitoPage")} />
       <Button style={styles.button} title="Direitos Humanos" onPress={() => router.push("/(tabs)/quiz/page/direitosHumanosPage")} />
-      <Button style={styles.button} title="Lei de execução penal" onPress={() => router.push("/(tabs)/quiz/page/execucaoPenalPage")} />
       <Button style={styles.button} title="Legislação Especial" onPress={() => router.push("/(tabs)/quiz/page/legislacaoEspecialPage")} />
       <Button style={styles.button} title="Redação Oficíal" onPress={() => router.push("/(tabs)/quiz/page/redacaoOficialPage")} />
     </View>
+    <View style={{height:50}}>
+      <Link style={{textAlign:'center', color:'white',fontWeight:'bold'}} href="https://wa.me/+5533999222322" >
+      created by Elite Support TI
+      </Link>
+    </View>
     </ImageBackground>
+    </>
   );
 }
 

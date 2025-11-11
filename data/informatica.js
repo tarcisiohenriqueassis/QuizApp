@@ -1,4 +1,4 @@
-import embaralharPerguntas from '../../../utils/embaralharPerguntas';
+import embaralharPerguntas from '../utils/embaralharPerguntas';
 
 export const perguntasInformatica = embaralharPerguntas([
   {

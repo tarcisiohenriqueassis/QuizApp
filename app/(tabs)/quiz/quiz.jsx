@@ -1,58 +1,76 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, BackHandler } from "react-native";
+import React, { useState, useEffect,useCallback } from "react";
+import { View, Text, TouchableOpacity, StyleSheet, BackHandler, ImageBackground } from "react-native";
 import { useRouter } from "expo-router";
 import Toast from "react-native-toast-message";
+import { useFocusEffect } from "@react-navigation/native";
+import embaralharPerguntasEAlternativas from "../../../utils/embaralharPerguntas"; // ajuste o caminho
+import Brasao from "../../../assets/images/Brasao-PPMG.png";
 
-export default function Quiz({ perguntas = [] }) { // default vazio
+export default function Quiz({ perguntas = [] }) { 
   const router = useRouter();
   const [questaoAtual, setQuestaoAtual] = useState(0);
   const [respostaSelecionada, setRespostaSelecionada] = useState(null);
   const [respostasCorretas, setRespostasCorretas] = useState(0);
+  const [respostaErrada, setRespostaErrada] = useState(0);
   const [quizConcluido, setQuizConcluido] = useState(false);
+  const [perguntasEmbaralhadas, setPerguntasEmbaralhadas] = useState([]);
 
   // Bloqueia o botão voltar sempre na tela do quiz
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
-      () => true // bloqueia o botão voltar
+      () => true
     );
     return () => backHandler.remove();
   }, []);
+
+  // Embaralha perguntas e alternativas ao carregar o componente
+  useFocusEffect(
+    useCallback(() => {
+      const embaralhadas = embaralharPerguntasEAlternativas(perguntas);
+      setPerguntasEmbaralhadas(embaralhadas);
+      setQuestaoAtual(0);
+      setRespostasCorretas(0);
+      setRespostaErrada(0);
+      setQuizConcluido(false);
+    }, [perguntas])
+  );
 
   const mostrarToast = (mensagem, tipo = "success") => {
     Toast.show({
       type: tipo,
       text1: mensagem,
       position: "top",
-      visibilityTime: 2700,
+      visibilityTime: 4000,
       autoHide: true,
-      topOffset: 60,
+      topOffset: 12,
     });
   };
 
   const handleOpcao = (index) => {
-    if (!perguntas[questaoAtual]) return;
+    if (!perguntasEmbaralhadas[questaoAtual]) return;
 
     setRespostaSelecionada(index);
-    const correta = perguntas[questaoAtual].correta;
+    const correta = perguntasEmbaralhadas[questaoAtual].correta;
 
     if (index === correta) {
       setRespostasCorretas(respostasCorretas + 1);
       mostrarToast("✅ Resposta correta!", "success");
     } else {
       mostrarToast(
-        `❌ Errado! A correta é: ${perguntas[questaoAtual].opcoes[correta]}`,
+        `❌ Errado! A correta é: ${perguntasEmbaralhadas[questaoAtual].opcoes[correta]}`,
         "error"
       );
+      setRespostaErrada(setRespostaErrada + 1);
     }
   };
 
   const handleProxima = () => {
-    if (!perguntas[questaoAtual]) return;
+    if (!perguntasEmbaralhadas[questaoAtual]) return;
 
     setRespostaSelecionada(null);
 
-    if (questaoAtual + 1 < perguntas.length) {
+    if (questaoAtual + 1 < perguntasEmbaralhadas.length) {
       setQuestaoAtual(questaoAtual + 1);
     } else {
       setQuizConcluido(true);
@@ -60,8 +78,11 @@ export default function Quiz({ perguntas = [] }) { // default vazio
   };
 
   const handleRecomecar = () => {
+    const embaralhadas = embaralharPerguntasEAlternativas(perguntas);
+    setPerguntasEmbaralhadas(embaralhadas);
     setQuestaoAtual(0);
     setRespostasCorretas(0);
+    setRespostaErrada(0);
     setQuizConcluido(false);
   };
 
@@ -69,7 +90,7 @@ export default function Quiz({ perguntas = [] }) { // default vazio
     router.replace("/"); // substitui a rota, impedindo voltar
   };
 
-  if (!perguntas.length) {
+  if (!perguntasEmbaralhadas.length) {
     return (
       <View style={styles.container}>
         <Text style={styles.pergunta}>Nenhuma pergunta disponível.</Text>
@@ -81,7 +102,7 @@ export default function Quiz({ perguntas = [] }) { // default vazio
     return (
       <View style={styles.container}>
         <Text style={styles.pergunta}>
-          🎉 Quiz concluído! Você acertou {respostasCorretas} de {perguntas.length}
+          🎉 Quiz concluído! Você acertou {respostasCorretas} de {perguntasEmbaralhadas.length}
         </Text>
 
         <TouchableOpacity style={styles.botaoProxima} onPress={handleRecomecar}>
@@ -95,10 +116,12 @@ export default function Quiz({ perguntas = [] }) { // default vazio
     );
   }
 
-  const perguntaAtual = perguntas[questaoAtual];
+  const perguntaAtual = perguntasEmbaralhadas[questaoAtual];
 
   return (
+    <ImageBackground  source={Brasao} style={styles.background}>
     <View style={styles.container}>
+      <Toast />
       <Text style={styles.pergunta}>{perguntaAtual.pergunta}</Text>
 
       {perguntaAtual.opcoes.map((opcao, index) => {
@@ -119,19 +142,46 @@ export default function Quiz({ perguntas = [] }) { // default vazio
           </TouchableOpacity>
         );
       })}
-
+       
       {respostaSelecionada !== null && (
         <TouchableOpacity style={styles.botaoProxima} onPress={handleProxima}>
           <Text style={styles.textoBotao}>Próxima</Text>
         </TouchableOpacity>
       )}
-
-      <Toast />
+      
+       <Text>
+       {perguntasEmbaralhadas.length > 0 && (
+        <Text style={{ marginTop: 20, color: "white", fontWeight: "bold", textAlign: "center" }}>
+          Questão {questaoAtual + 1} de {perguntasEmbaralhadas.length}
+        </Text>
+      )}
+      </Text>
+      <Text>
+      {respostasCorretas >= 0 && (
+        <Text style={{ marginTop: 5, color: "green", fontWeight: "bold", textAlign: "center" }}>
+          Acertos: {respostasCorretas}
+        </Text>
+      )}
+      </Text>
+       <Text>  
+      {respostaErrada && (
+        <Text style={{ color: "red", fontWeight: "bold", textAlign: "center" }}>
+          {`Erradas: ${respostaErrada}`}
+        </Text>
+      )}
+      </Text> 
+     
     </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
+  },
   container: {
     flex: 1,
     paddingBottom: 28,
@@ -162,7 +212,8 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     borderRadius: 8,
     alignItems: "center",
-    marginTop: 20,
+    marginTop: 10,
+    marginBottom: 20,
   },
   textoBotao: {
     fontSize: 18,

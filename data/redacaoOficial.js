@@ -1,4 +1,4 @@
-import embaralharAlternativas from "../../../utils/embaralharPerguntas";
+import embaralharAlternativas from "../utils/embaralharPerguntas";
 
 export const perguntasRedacaoOficial = embaralharAlternativas([
   {

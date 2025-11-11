@@ -1,51 +1,43 @@
 {
   "expo": {
-    "name": "QuizPPMG",
+    "name": "QuizApp",
     "slug": "quizppmg",
+    "platforms": [
+      "android",
+      "ios"
+    ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "scheme": "quizppmg",
     "icon": "./assets/images/Brasao-PPMG.png",
-    "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/images/Brasao-PPMG.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
     "android": {
-      "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/Brasao-PPMG.png"
-      },
-      "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "package": "com.seunome.quizapp"
     },
     "web": {
-      "output": "static"
-    },
-    "plugins": [
-      "expo-router",
-      [
-        "expo-splash-screen",
-        {
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff",
-          "dark": {
-            "backgroundColor": "#000000"
-          }
-        }
-      ]
-    ],
-    "experiments": {
-      "typedRoutes": true,
-      "reactCompiler": true
+      "favicon": "./assets/images/Brasao-PPMG.png"
     },
     "extra": {
-      "router": {},
       "eas": {
-        "projectId": "874102c1-7df3-41e5-863a-573f259efbd6"
+        "projectId": "8ef89a1f-c7aa-4f86-918a-d93a5f34e436"
       }
     },
-    "owner": "thfyjfyufy"
+    "owner": "thfyjfyufys-organization",
+    "plugins": [
+      "expo-router",
+      "expo-web-browser"
+    ]
   }
 }
