@@ -31,10 +31,11 @@
     },
     "extra": {
       "eas": {
-        "projectId": "8ef89a1f-c7aa-4f86-918a-d93a5f34e436"
-      }
+        "projectId": "3b89d13e-7846-4af0-a637-3bd1fb92ace4"
+      },
+      "router": {}
     },
-    "owner": "thfyjfyufys-organization",
+    "owner": "tatatataatatta",
     "plugins": [
       "expo-router",
       "expo-web-browser"
