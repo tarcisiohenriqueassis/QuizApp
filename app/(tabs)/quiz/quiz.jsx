@@ -61,7 +61,7 @@ export default function Quiz({ perguntas = [] }) {
         `❌ Errado! A correta é: ${perguntasEmbaralhadas[questaoAtual].opcoes[correta]}`,
         "error"
       );
-      setRespostaErrada(setRespostaErrada + 1);
+       setRespostaErrada(prev => prev + 1);
     }
   };
 
